@@ -1,0 +1,6 @@
+{
+  "name": "AgriEasy",
+  "description": "A smart agriculture assistant platform for Indian farmers featuring AI chat, weather forecasts, market prices, and community support.",
+  "requestFramePermissions": ["geolocation", "camera", "microphone"],
+  "majorCapabilities": ["AI Assistant", "Weather Forecast", "E-commerce", "Market Intelligence"]
+}

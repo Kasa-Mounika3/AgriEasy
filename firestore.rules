@@ -1,0 +1,218 @@
+rules_version = '2';
+service cloud.firestore {
+  match /databases/{database}/documents {
+    // ===============================================================
+    // Assumed Data Model
+    // ===============================================================
+    //
+    // Collection: users
+    // Document ID: userId (matches auth.uid)
+    // Fields:
+    //   - uid: string (required)
+    //   - displayName: string (required)
+    //   - email: string (required, email format)
+    //   - phone: string (optional)
+    //   - location: map (optional)
+    //     - state: string
+    //     - district: string
+    //   - language: string (optional)
+    //   - updatedAt: number
+    //
+    // Collection: bookings
+    // Document ID: auto-generated
+    // Fields:
+    //   - userId: string (required, matches auth.uid)
+    //   - marketName: string (required)
+    //   - state: string (required)
+    //   - district: string (required)
+    //   - date: string (required)
+    //   - timeSlot: string (required)
+    //   - cropName: string (required)
+    //   - quantity: string (required)
+    //   - createdAt: number (required)
+    //
+    // ===============================================================
+
+    // ===============================================================
+    // Helper Functions
+    // ===============================================================
+    
+    function isAuthenticated() {
+      return request.auth != null;
+    }
+
+    function isOwner(userId) {
+      return isAuthenticated() && request.auth.uid == userId;
+    }
+
+    function isDocOwner() {
+      return isAuthenticated() && request.auth.uid == resource.data.userId;
+    }
+
+    function isValidEmail(email) {
+      return email is string && email.matches("^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\\.[a-zA-Z]{2,}$");
+    }
+
+    function isValidString(val, min, max) {
+      return val is string && val.size() >= min && val.size() <= max;
+    }
+
+    // ===============================================================
+    // Domain Validators
+    // ===============================================================
+
+    function isValidUser(data) {
+      return data.keys().hasAll(['uid', 'displayName', 'email']) &&
+             data.uid == request.auth.uid &&
+             isValidString(data.displayName, 1, 100) &&
+             isValidEmail(data.email);
+    }
+
+    function isValidBooking(data) {
+      return data.keys().hasAll(['userId', 'marketName', 'state', 'district', 'date', 'timeSlot', 'cropName', 'quantity', 'createdAt']) &&
+             data.userId == request.auth.uid &&
+             isValidString(data.marketName, 1, 200) &&
+             isValidString(data.state, 1, 100) &&
+             isValidString(data.district, 1, 100) &&
+             data.createdAt is number;
+    }
+
+    function isValidPost(data) {
+      return data.keys().hasAll(['authorId', 'authorName', 'title', 'description', 'createdAt']) &&
+             data.authorId == request.auth.uid &&
+             isValidString(data.title, 1, 200) &&
+             isValidString(data.description, 1, 5000) &&
+             data.createdAt is number;
+    }
+
+    function isValidComment(data) {
+      return data.keys().hasAll(['postId', 'authorId', 'authorName', 'text', 'createdAt']) &&
+             data.authorId == request.auth.uid &&
+             isValidString(data.text, 1, 1000) &&
+             data.createdAt is number;
+    }
+
+    function isValidLike(data) {
+      return data.keys().hasAll(['postId', 'userId', 'createdAt']) &&
+             data.userId == request.auth.uid &&
+             data.createdAt is number;
+    }
+
+    function isValidShopOrder(data) {
+      return data.keys().hasAll(['userId', 'items', 'totalAmount', 'status', 'shippingAddress', 'paymentMethod', 'orderDate', 'orderId']) &&
+             data.userId == request.auth.uid &&
+             data.items is list &&
+             data.totalAmount is number &&
+             data.shippingAddress is map &&
+             data.shippingAddress.keys().hasAll(['name', 'phone', 'address', 'district', 'state', 'pincode']) &&
+             isValidString(data.status, 1, 50);
+    }
+
+    // ===============================================================
+    // Rules
+    // ===============================================================
+
+    // Default deny
+    match /{document=**} {
+      allow read, write: if false;
+    }
+
+    // Allow reading test connection document for health checks
+    match /test/connection {
+      allow read: if true;
+    }
+
+    match /orders/{orderId} {
+      allow read: if isAuthenticated() && resource.data.userId == request.auth.uid;
+      allow create: if isAuthenticated() && request.resource.data.userId == request.auth.uid && isValidShopOrder(request.resource.data);
+      allow update: if false;
+      allow delete: if false;
+    }
+
+    match /users/{userId} {
+      allow read: if isOwner(userId);
+      allow create: if isOwner(userId) && isValidUser(request.resource.data);
+      allow update: if isOwner(userId) && isValidUser(request.resource.data);
+    }
+
+    match /phone_login_index/{phoneNumber} {
+      allow get: if true;
+      allow list: if false;
+      allow create, update: if isAuthenticated() &&
+        request.resource.data.uid == request.auth.uid &&
+        request.resource.data.email is string &&
+        request.resource.data.email.matches("^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\\.[a-zA-Z]{2,}$");
+      allow delete: if false;
+    }
+
+    match /bookings/{bookingId} {
+      allow read: if isAuthenticated() && (resource == null || resource.data.userId == request.auth.uid);
+      allow create: if isAuthenticated() && request.resource.data.userId == request.auth.uid && isValidBooking(request.resource.data);
+      allow update: if false; // Bookings are immutable for now
+      allow delete: if false;
+    }
+
+    match /market_products/{productId} {
+      allow read: if true; // Publicly browseable
+      allow create: if isAuthenticated() && request.resource.data.farmerId == request.auth.uid;
+      allow update: if isAuthenticated() && resource.data.farmerId == request.auth.uid;
+      allow delete: if isAuthenticated() && resource.data.farmerId == request.auth.uid;
+    }
+
+    match /market_orders/{orderId} {
+      allow read: if isAuthenticated() && (resource.data.customerId == request.auth.uid || resource.data.farmerId == request.auth.uid);
+      allow create: if isAuthenticated() && request.resource.data.customerId == request.auth.uid;
+      allow update: if isAuthenticated() && (resource.data.customerId == request.auth.uid || resource.data.farmerId == request.auth.uid);
+    }
+
+    match /posts/{postId} {
+      allow read: if isAuthenticated();
+      allow create: if isAuthenticated() && isValidPost(request.resource.data);
+      allow update: if isAuthenticated() && (
+        (resource.data.authorId == request.auth.uid && isValidPost(request.resource.data)) ||
+        (request.resource.data.diff(resource.data).affectedKeys().hasOnly(['likesCount', 'commentsCount']))
+      );
+      allow delete: if isAuthenticated() && resource.data.authorId == request.auth.uid;
+
+      match /comments/{commentId} {
+        allow read: if isAuthenticated();
+        allow create: if isAuthenticated() && isValidComment(request.resource.data);
+        allow delete: if isAuthenticated() && (resource.data.authorId == request.auth.uid || get(/databases/$(database)/documents/posts/$(postId)).data.authorId == request.auth.uid);
+      }
+    }
+
+    match /likes/{likeId} {
+      allow read: if isAuthenticated();
+      allow create: if isAuthenticated() && isValidLike(request.resource.data) && likeId == request.auth.uid + "_" + request.resource.data.postId;
+      allow delete: if isAuthenticated() && resource.data.userId == request.auth.uid;
+    }
+
+    match /fpos/{fpoId} {
+      allow read: if true;
+      allow write: if false; // Admin only, managed via console for now
+    }
+
+    match /crop_plans/{planId} {
+      allow read: if isAuthenticated() && resource.data.userId == request.auth.uid;
+      allow create: if isAuthenticated() && request.resource.data.userId == request.auth.uid;
+      allow delete: if isAuthenticated() && resource.data.userId == request.auth.uid;
+    }
+
+    match /cold_storages/{storageId} {
+      allow read: if isAuthenticated();
+      allow write: if false; // Admin only
+    }
+
+    match /cold_storage_bookings/{bookingId} {
+      allow read: if isAuthenticated() && (resource == null || resource.data.userId == request.auth.uid);
+      allow create: if isAuthenticated() && request.resource.data.userId == request.auth.uid;
+      allow update: if isAuthenticated() && (resource.data.userId == request.auth.uid);
+      allow delete: if isAuthenticated() && resource.data.userId == request.auth.uid;
+    }
+
+    match /fpo_applications/{applicationId} {
+      allow read: if isAuthenticated() && (resource == null || resource.data.userId == request.auth.uid);
+      allow create: if isAuthenticated() && request.resource.data.userId == request.auth.uid;
+    }
+  }
+}

@@ -1,0 +1,280 @@
+{
+  "entities": {
+    "UserProfile": {
+      "title": "UserProfile",
+      "description": "User profile information",
+      "type": "object",
+      "properties": {
+        "uid": { "type": "string" },
+        "displayName": { "type": "string" },
+        "email": { "type": "string", "format": "email" },
+        "phone": { "type": "string" },
+        "location": {
+          "type": "object",
+          "properties": {
+            "state": { "type": "string" },
+            "district": { "type": "string" }
+          }
+        },
+        "language": { "type": "string" },
+        "updatedAt": { "type": "number" }
+      },
+      "required": ["uid", "displayName", "email"]
+    },
+    "Booking": {
+      "title": "Booking",
+      "description": "Market slot booking record",
+      "type": "object",
+      "properties": {
+        "userId": { "type": "string" },
+        "marketName": { "type": "string" },
+        "state": { "type": "string" },
+        "district": { "type": "string" },
+        "date": { "type": "string" },
+        "timeSlot": { "type": "string" },
+        "cropName": { "type": "string" },
+        "quantity": { "type": "string" },
+        "createdAt": { "type": "number" }
+      },
+      "required": ["userId", "marketName", "state", "district", "date", "timeSlot", "cropName", "quantity", "createdAt"]
+    },
+    "MarketProduct": {
+      "title": "MarketProduct",
+      "description": "Product listed in direct market",
+      "type": "object",
+      "properties": {
+        "farmerId": { "type": "string" },
+        "farmerName": { "type": "string" },
+        "name": { "type": "string" },
+        "category": { "type": "string" },
+        "price": { "type": "number" },
+        "unit": { "type": "string" },
+        "quantity": { "type": "number" },
+        "location": { "type": "object" },
+        "image": { "type": "string" },
+        "harvestDate": { "type": "number" },
+        "isOrganic": { "type": "boolean" },
+        "rating": { "type": "number" },
+        "reviewsCount": { "type": "number" },
+        "createdAt": { "type": "number" }
+      },
+      "required": ["farmerId", "name", "category", "price", "unit", "quantity", "location", "image", "harvestDate", "createdAt"]
+    },
+    "MarketOrder": {
+      "title": "MarketOrder",
+      "description": "Customer order in direct market",
+      "type": "object",
+      "properties": {
+        "customerId": { "type": "string" },
+        "items": { "type": "array" },
+        "totalAmount": { "type": "number" },
+        "deliveryAddress": { "type": "string" },
+        "contactNumber": { "type": "string" },
+        "status": { "type": "string" },
+        "estimatedDelivery": { "type": "string" },
+        "createdAt": { "type": "number" }
+      },
+      "required": ["customerId", "items", "totalAmount", "deliveryAddress", "contactNumber", "status", "createdAt"]
+    },
+    "Post": {
+      "title": "Post",
+      "description": "Community post",
+      "type": "object",
+      "properties": {
+        "authorId": { "type": "string" },
+        "authorName": { "type": "string" },
+        "authorPhoto": { "type": "string" },
+        "title": { "type": "string" },
+        "description": { "type": "string" },
+        "image": { "type": "string" },
+        "likesCount": { "type": "number" },
+        "commentsCount": { "type": "number" },
+        "createdAt": { "type": "number" }
+      },
+      "required": ["authorId", "authorName", "title", "description", "createdAt"]
+    },
+    "Comment": {
+      "title": "Comment",
+      "description": "Post comment",
+      "type": "object",
+      "properties": {
+        "postId": { "type": "string" },
+        "authorId": { "type": "string" },
+        "authorName": { "type": "string" },
+        "text": { "type": "string" },
+        "createdAt": { "type": "number" }
+      },
+      "required": ["postId", "authorId", "authorName", "text", "createdAt"]
+    },
+    "Like": {
+      "title": "Like",
+      "description": "Post like interaction",
+      "type": "object",
+      "properties": {
+        "postId": { "type": "string" },
+        "userId": { "type": "string" },
+        "createdAt": { "type": "number" }
+      },
+      "required": ["postId", "userId", "createdAt"]
+    },
+    "FPO": {
+      "title": "FPO",
+      "description": "Farmer Producer Organization",
+      "type": "object",
+      "properties": {
+        "name": { "type": "string" },
+        "state": { "type": "string" },
+        "district": { "type": "string" },
+        "location": { "type": "string" },
+        "contact": { "type": "string" },
+        "services": { "type": "array" }
+      },
+      "required": ["name", "state", "district", "location", "contact", "services"]
+    },
+    "CropPlan": {
+      "title": "CropPlan",
+      "description": "Saved crop recommendation and farming guide",
+      "type": "object",
+      "properties": {
+        "userId": { "type": "string" },
+        "cropName": { "type": "string" },
+        "soilType": { "type": "string" },
+        "waterAvailability": { "type": "string" },
+        "irrigationType": { "type": "string" },
+        "landArea": { "type": "string" },
+        "labourAvailability": { "type": "string" },
+        "guide": { "type": "object" },
+        "createdAt": { "type": "number" }
+      },
+      "required": ["userId", "cropName", "guide", "createdAt"]
+    },
+    "ColdStorage": {
+      "title": "ColdStorage",
+      "description": "Cold storage facility details",
+      "type": "object",
+      "properties": {
+        "name": { "type": "string" },
+        "address": { "type": "string" },
+        "state": { "type": "string" },
+        "district": { "type": "string" },
+        "contact": { "type": "string" },
+        "capacity": { "type": "string" },
+        "managerName": { "type": "string" },
+        "customerCare": { "type": "string" },
+        "emergencyContact": { "type": "string" },
+        "pricePerUnit": { "type": "object" },
+        "supportedConditions": { "type": "array" },
+        "supportedCrops": { "type": "array" },
+        "rating": { "type": "number" },
+        "reviewsCount": { "type": "number" },
+        "lat": { "type": "number" },
+        "lng": { "type": "number" },
+        "tags": { "type": "array" }
+      },
+      "required": ["name", "address", "state", "district", "lat", "lng"]
+    },
+    "ColdStorageBooking": {
+      "title": "ColdStorageBooking",
+      "description": "Farmer booking for cold storage",
+      "type": "object",
+      "properties": {
+        "storageId": { "type": "string" },
+        "storageName": { "type": "string" },
+        "userId": { "type": "string" },
+        "farmerName": { "type": "string" },
+        "contactNumber": { "type": "string" },
+        "cropName": { "type": "string" },
+        "category": { "type": "string" },
+        "estimatedQuantity": { "type": "number" },
+        "actualQuantity": { "type": "number" },
+        "unit": { "type": "string" },
+        "startDate": { "type": "number" },
+        "duration": { "type": "number" },
+        "preferredIntakeDate": { "type": "number" },
+        "specialInstructions": { "type": "string" },
+        "status": { "type": "string" },
+        "priceDetails": { "type": "object" },
+        "weightFluctuations": { "type": "object" },
+        "renewals": { "type": "array" },
+        "createdAt": { "type": "number" }
+      },
+      "required": ["storageId", "userId", "farmerName", "cropName", "estimatedQuantity", "startDate", "duration", "status", "createdAt"]
+    },
+    "ShopOrder": {
+      "title": "ShopOrder",
+      "description": "Order placed via AgriShop",
+      "type": "object",
+      "properties": {
+        "userId": { "type": "string" },
+        "items": { "type": "array" },
+        "totalAmount": { "type": "number" },
+        "status": { "type": "string" },
+        "shippingAddress": {
+          "type": "object",
+          "properties": {
+            "name": { "type": "string" },
+            "phone": { "type": "string" },
+            "address": { "type": "string" },
+            "district": { "type": "string" },
+            "state": { "type": "string" },
+            "pincode": { "type": "string" }
+          }
+        },
+        "paymentMethod": { "type": "string" },
+        "orderDate": { "type": "object" },
+        "orderId": { "type": "string" }
+      },
+      "required": ["userId", "items", "totalAmount", "status", "shippingAddress", "paymentMethod", "orderDate", "orderId"]
+    }
+  },
+  "firestore": {
+    "/users/{userId}": {
+      "schema": "UserProfile",
+      "description": "User profile documents"
+    },
+    "/bookings/{bookingId}": {
+      "schema": "Booking",
+      "description": "Market slot booking documents"
+    },
+    "/market_products/{productId}": {
+      "schema": "MarketProduct",
+      "description": "Direct market product listings"
+    },
+    "/market_orders/{orderId}": {
+      "schema": "MarketOrder",
+      "description": "Direct market orders"
+    },
+    "/posts/{postId}": {
+      "schema": "Post",
+      "description": "Community posts"
+    },
+    "/posts/{postId}/comments/{commentId}": {
+      "schema": "Comment",
+      "description": "Comments on posts"
+    },
+    "/likes/{likeId}": {
+      "schema": "Like",
+      "description": "Post likes (ID: userId_postId)"
+    },
+    "/fpos/{fpoId}": {
+      "schema": "FPO",
+      "description": "Farmer Producer Organizations"
+    },
+    "/crop_plans/{planId}": {
+      "schema": "CropPlan",
+      "description": "Saved crop plans for users"
+    },
+    "/cold_storages/{storageId}": {
+      "schema": "ColdStorage",
+      "description": "Cold storage facilities"
+    },
+    "/cold_storage_bookings/{bookingId}": {
+      "schema": "ColdStorageBooking",
+      "description": "User specific cold storage bookings"
+    },
+    "/orders/{orderId}": {
+      "schema": "ShopOrder",
+      "description": "AgriShop customer orders"
+    }
+  }
+}

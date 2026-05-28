@@ -1,0 +1,616 @@
+import { shopProductImages } from '@/lib/imageAssets';
+
+export interface Product {
+  id: string;
+  name: string;
+  brand: string;
+  category: string;
+  price: number;
+  unit: string;
+  image: string;
+  images: string[];
+  rating: number;
+  reviews: number;
+  description: string;
+  stock: number;
+  tags: string[];
+  specifications: Record<string, string>;
+}
+
+export const CATEGORIES = [
+  'All', 'Seeds', 'Fertilizers', 'Pesticides', 'Tools & Equipment',
+  'Irrigation Products', 'Organic Products', 'Animal Feed',
+  'Farm Accessories', 'Storage Items', 'Nursery & Plant Care'
+];
+
+const rawProducts: Product[] = [
+  // --- 1. SEEDS ---
+  { 
+    id: 's1', 
+    name: 'Premium Paddy Seeds', 
+    brand: 'Bharat Agri', 
+    category: 'Seeds', 
+    price: 850, 
+    unit: '10kg', 
+    image: 'https://source.unsplash.com/400x400/?rice,seeds', 
+    images: ['https://source.unsplash.com/800x800/?rice,seeds'], 
+    rating: 4.6, 
+    reviews: 120, 
+    description: 'High-yield paddy seeds for robust growth and excellent crop quality.', 
+    stock: 50, 
+    tags: ['High Yield'], 
+    specifications: { 'Variety': 'Hybrid' } 
+  },
+  { 
+    id: 's2', 
+    name: 'Quality Wheat Seeds', 
+    brand: 'Bharat Agri', 
+    category: 'Seeds', 
+    price: 1100, 
+    unit: '20kg', 
+    image: 'https://source.unsplash.com/400x400/?wheat,seeds', 
+    images: ['https://source.unsplash.com/800x800/?wheat,seeds'], 
+    rating: 4.8, 
+    reviews: 200, 
+    description: 'High-protein wheat seeds optimized for Indian soil conditions.', 
+    stock: 80, 
+    tags: ['Premium'], 
+    specifications: { 'Variety': 'Sharbati' } 
+  },
+  { 
+    id: 's3', 
+    name: 'Hybrid Maize Seeds', 
+    brand: 'AgriStar', 
+    category: 'Seeds', 
+    price: 450, 
+    unit: '5kg', 
+    image: 'https://source.unsplash.com/400x400/?corn,seeds', 
+    images: ['https://source.unsplash.com/800x800/?corn,seeds'], 
+    rating: 4.5, 
+    reviews: 90, 
+    description: 'Drought-tolerant hybrid maize seeds for consistent yield.', 
+    stock: 60, 
+    tags: ['Hybrid'], 
+    specifications: { 'Type': 'Sweet Corn' } 
+  },
+  { 
+    id: 's4', 
+    name: 'Hybrid Cotton Seeds', 
+    brand: 'Mahyco', 
+    category: 'Seeds', 
+    price: 950, 
+    unit: '450g', 
+    image: 'https://source.unsplash.com/400x400/?cotton,seeds', 
+    images: ['https://source.unsplash.com/800x800/?cotton,seeds'], 
+    rating: 4.7, 
+    reviews: 110, 
+    description: 'Bt-Cotton hybrid seeds with high resistance to pests.', 
+    stock: 100, 
+    tags: ['Bt-Cotton'], 
+    specifications: { 'Grade': 'Premium' } 
+  },
+  { 
+    id: 's5', 
+    name: 'Tomato Seed Packet', 
+    brand: 'NurseryPlus', 
+    category: 'Seeds', 
+    price: 120, 
+    unit: '10g', 
+    image: 'https://source.unsplash.com/400x400/?tomato,seeds', 
+    images: ['https://source.unsplash.com/800x800/?tomato,seeds'], 
+    rating: 4.9, 
+    reviews: 300, 
+    description: 'High-quality hybrid tomato seeds for home gardening and farming.', 
+    stock: 200, 
+    tags: ['Nursery'], 
+    specifications: { 'Germination': '90%' } 
+  },
+  { 
+    id: 's6', 
+    name: 'Hot Chilli Seeds', 
+    brand: 'SpicyAgri', 
+    category: 'Seeds', 
+    price: 180, 
+    unit: '50g', 
+    image: 'https://source.unsplash.com/400x400/?chilli,seeds', 
+    images: ['https://source.unsplash.com/800x800/?chilli,seeds'], 
+    rating: 4.4, 
+    reviews: 85, 
+    description: 'High-yield pungent chilli seeds for massive harvests.', 
+    stock: 150, 
+    tags: ['Hot'], 
+    specifications: { 'Spicy': 'High' } 
+  },
+
+  // --- 2. FERTILIZERS ---
+  { 
+    id: 'f1', 
+    name: 'Granular Urea Bag', 
+    brand: 'IFFCO', 
+    category: 'Fertilizers', 
+    price: 266, 
+    unit: '45kg', 
+    image: 'https://source.unsplash.com/400x400/?fertilizer,bag', 
+    images: ['https://source.unsplash.com/800x800/?fertilizer,bag'], 
+    rating: 4.9, 
+    reviews: 5000, 
+    description: 'Highest quality nitrogenous fertilizer for rapid crop growth.', 
+    stock: 1000, 
+    tags: ['Essential'], 
+    specifications: { 'Nitrogen': '46%' } 
+  },
+  { 
+    id: 'f2', 
+    name: 'DAP Fertilizer', 
+    brand: 'NFL', 
+    category: 'Fertilizers', 
+    price: 1350, 
+    unit: '50kg', 
+    image: 'https://source.unsplash.com/400x400/?fertilizer', 
+    images: ['https://source.unsplash.com/800x800/?fertilizer'], 
+    rating: 4.8, 
+    reviews: 2500, 
+    description: 'Rich in phosphorus, essential for root development and crop strength.', 
+    stock: 500, 
+    tags: ['Phosphorus'], 
+    specifications: { 'P2O5': '46%', 'N': '18%' } 
+  },
+  { 
+    id: 'f3', 
+    name: 'Organic Compost Bag', 
+    brand: 'BioFuture', 
+    category: 'Fertilizers', 
+    price: 320, 
+    unit: '20kg', 
+    image: 'https://source.unsplash.com/400x400/?compost', 
+    images: ['https://source.unsplash.com/800x800/?compost'], 
+    rating: 4.7, 
+    reviews: 300, 
+    description: 'Natural compost for healthy soil microbial life and sustainable farming.', 
+    stock: 250, 
+    tags: ['Organic'], 
+    specifications: { 'PH': '7.0' } 
+  },
+  { 
+    id: 'f4', 
+    name: 'Premium Vermicompost', 
+    brand: 'Earthly', 
+    category: 'Fertilizers', 
+    price: 450, 
+    unit: '25kg', 
+    image: 'https://source.unsplash.com/400x400/?vermicompost', 
+    images: ['https://source.unsplash.com/800x800/?vermicompost'], 
+    rating: 4.9, 
+    reviews: 600, 
+    description: 'Pure earthworm castings enriched with micro-nutrients.', 
+    stock: 150, 
+    tags: ['Natural'], 
+    specifications: { 'Grade': 'Premium' } 
+  },
+
+  // --- 3. PESTICIDES ---
+  { 
+    id: 'ps1', 
+    name: 'Insecticide Spray', 
+    brand: 'InsectiShield', 
+    category: 'Pesticides', 
+    price: 450, 
+    unit: '1L', 
+    image: 'https://source.unsplash.com/400x400/?pesticide,spray', 
+    images: ['https://source.unsplash.com/800x800/?pesticide,spray'], 
+    rating: 4.6, 
+    reviews: 750, 
+    description: 'Effective contact insecticide for broad-spectrum pest control.', 
+    stock: 120, 
+    tags: ['Protector'], 
+    specifications: { 'Chemical': 'Cypermethrin' } 
+  },
+  { 
+    id: 'ps2', 
+    name: 'Fungicide Solution', 
+    brand: 'FungiStop', 
+    category: 'Pesticides', 
+    price: 580, 
+    unit: '500g', 
+    image: 'https://source.unsplash.com/400x400/?fungicide', 
+    images: ['https://source.unsplash.com/800x800/?fungicide'], 
+    rating: 4.5, 
+    reviews: 400, 
+    description: 'Powerful fungicide to prevent and treat plant diseases.', 
+    stock: 95, 
+    tags: ['Systemic'], 
+    specifications: { 'Grade': 'A' } 
+  },
+  { 
+    id: 'ps3', 
+    name: 'Neem Oil Extract', 
+    brand: 'EcoGuard', 
+    category: 'Pesticides', 
+    price: 299, 
+    unit: '500ml', 
+    image: 'https://source.unsplash.com/400x400/?neem,oil', 
+    images: ['https://source.unsplash.com/800x800/?neem,oil'], 
+    rating: 4.8, 
+    reviews: 900, 
+    description: 'Pure cold-pressed neem oil for natural and safe pest management.', 
+    stock: 200, 
+    tags: ['Organic'], 
+    specifications: { 'Purity': '100%' } 
+  },
+
+  // --- 4. TOOLS & EQUIPMENT ---
+  { 
+    id: 'te1', 
+    name: 'Mahindra Farm Tractor', 
+    brand: 'Mahindra', 
+    category: 'Tools & Equipment', 
+    price: 650000, 
+    unit: 'Unit', 
+    image: 'https://source.unsplash.com/400x400/?tractor', 
+    images: ['https://source.unsplash.com/800x800/?tractor'], 
+    rating: 4.9, 
+    reviews: 150, 
+    description: 'Powerful tractor designed for versatile Indian farming needs.', 
+    stock: 5, 
+    tags: ['Heavy Duty'], 
+    specifications: { 'Power': '42 HP' } 
+  },
+  { 
+    id: 'te2', 
+    name: 'Cast Iron Plough', 
+    brand: 'AgriTool', 
+    category: 'Tools & Equipment', 
+    price: 15000, 
+    unit: 'Set', 
+    image: 'https://source.unsplash.com/400x400/?plough', 
+    images: ['https://source.unsplash.com/800x800/?plough'], 
+    rating: 4.6, 
+    reviews: 45, 
+    description: 'Traditional yet durable iron plough for perfect soil tillage.', 
+    stock: 10, 
+    tags: ['Tillage'], 
+    specifications: { 'Material': 'Cast Iron' } 
+  },
+  { 
+    id: 'te3', 
+    name: 'Backpack Sprayer', 
+    brand: 'SprayMax', 
+    category: 'Tools & Equipment', 
+    price: 1850, 
+    unit: 'Piece', 
+    image: 'https://source.unsplash.com/400x400/?agriculture,sprayer', 
+    images: ['https://source.unsplash.com/800x800/?agriculture,sprayer'], 
+    rating: 4.5, 
+    reviews: 600, 
+    description: 'Ergonomic backpack sprayer for effortless application of pesticides.', 
+    stock: 120, 
+    tags: ['Manual'], 
+    specifications: { 'Capacity': '16L' } 
+  },
+  { 
+    id: 'te4', 
+    name: 'Digging Shovel', 
+    brand: 'AgriEdge', 
+    category: 'Tools & Equipment', 
+    price: 350, 
+    unit: 'Piece', 
+    image: 'https://source.unsplash.com/400x400/?shovel', 
+    images: ['https://source.unsplash.com/800x800/?shovel'], 
+    rating: 4.4, 
+    reviews: 180, 
+    description: 'Comfort-grip shovel for all your farm digging requirements.', 
+    stock: 100, 
+    tags: ['Hand Tool'], 
+    specifications: { 'Handle': 'Wood/Steel' } 
+  },
+
+  // --- 5. IRRIGATION PRODUCTS ---
+  { 
+    id: 'ir1', 
+    name: 'Drip Irrigation Kit', 
+    brand: 'WaterWise', 
+    category: 'Irrigation Products', 
+    price: 2499, 
+    unit: 'Set', 
+    image: 'https://source.unsplash.com/400x400/?drip,irrigation', 
+    images: ['https://source.unsplash.com/800x800/?drip,irrigation'], 
+    rating: 4.6, 
+    reviews: 320, 
+    description: 'Precision watering kit to save up to 70% of water.', 
+    stock: 40, 
+    tags: ['Efficiency'], 
+    specifications: { 'Area': '500 sq ft' } 
+  },
+  { 
+    id: 'ir2', 
+    name: 'High-Coverage Sprinkler', 
+    brand: 'RainMaker', 
+    category: 'Irrigation Products', 
+    price: 1250, 
+    unit: 'Piece', 
+    image: 'https://source.unsplash.com/400x400/?sprinkler,irrigation', 
+    images: ['https://source.unsplash.com/800x800/?sprinkler,irrigation'], 
+    rating: 4.7, 
+    reviews: 150, 
+    description: 'Automatic sprinkler for uniform field irrigation.', 
+    stock: 12, 
+    tags: ['Uniform'], 
+    specifications: { 'Radius': '10m' } 
+  },
+  { 
+    id: 'ir3', 
+    name: 'Diesel Water Pump', 
+    brand: 'Kirloskar', 
+    category: 'Irrigation Products', 
+    price: 12500, 
+    unit: 'Unit', 
+    image: 'https://source.unsplash.com/400x400/?water,pump', 
+    images: ['https://source.unsplash.com/800x800/?water,pump'], 
+    rating: 4.8, 
+    reviews: 500, 
+    description: 'Robust diesel engine water pump for remote irrigation.', 
+    stock: 25, 
+    tags: ['Reliable'], 
+    specifications: { 'Power': '5 HP' } 
+  },
+
+  // --- 6. ORGANIC PRODUCTS ---
+  { 
+    id: 'og1', 
+    name: 'Pure Vermicompost', 
+    brand: 'NatureFert', 
+    category: 'Organic Products', 
+    price: 450, 
+    unit: '25kg', 
+    image: 'https://source.unsplash.com/400x400/?organic,compost', 
+    images: ['https://source.unsplash.com/800x800/?organic,compost'], 
+    rating: 4.9, 
+    reviews: 650, 
+    description: 'All-natural organic compost for sustainable farming and gardening.', 
+    stock: 150, 
+    tags: ['Organic'], 
+    specifications: { 'Carbon': 'High' } 
+  },
+  { 
+    id: 'og2', 
+    name: 'Neem Cake Fertilizer', 
+    brand: 'EcoPlus', 
+    category: 'Organic Products', 
+    price: 450, 
+    unit: '10kg', 
+    image: 'https://source.unsplash.com/400x400/?neem', 
+    images: ['https://source.unsplash.com/800x800/?neem'], 
+    rating: 4.6, 
+    reviews: 280, 
+    description: 'Protects crops from soil pests and provides essential nutrients.', 
+    stock: 100, 
+    tags: ['Natural'], 
+    specifications: { 'Form': 'Cake' } 
+  },
+  { 
+    id: 'og3', 
+    name: 'Desi Manure', 
+    brand: 'DesiBio', 
+    category: 'Organic Products', 
+    price: 180, 
+    unit: '10kg', 
+    image: 'https://source.unsplash.com/400x400/?manure', 
+    images: ['https://source.unsplash.com/800x800/?manure'], 
+    rating: 4.7, 
+    reviews: 450, 
+    description: 'Traditional organic manure for improved soil fertility.', 
+    stock: 400, 
+    tags: ['Manure'], 
+    specifications: { 'Type': 'Cow Dung' } 
+  },
+
+  // --- 7. ANIMAL FEED ---
+  { 
+    id: 'af1', 
+    name: 'Cattle Feed Pellets', 
+    brand: 'KisanFeed', 
+    category: 'Animal Feed', 
+    price: 1100, 
+    unit: '50kg', 
+    image: 'https://source.unsplash.com/400x400/?animal,feed', 
+    images: ['https://source.unsplash.com/800x800/?animal,feed'], 
+    rating: 4.7, 
+    reviews: 900, 
+    description: 'Balanced nutritional feed to boost health and milk yield.', 
+    stock: 200, 
+    tags: ['Dairy'], 
+    specifications: { 'Protein': '18%' } 
+  },
+  { 
+    id: 'af2', 
+    name: 'Poultry Growth Feed', 
+    brand: 'AgroFeed', 
+    category: 'Animal Feed', 
+    price: 1850, 
+    unit: '50kg', 
+    image: 'https://source.unsplash.com/400x400/?poultry,feed', 
+    images: ['https://source.unsplash.com/800x800/?poultry,feed'], 
+    rating: 4.7, 
+    reviews: 600, 
+    description: 'Optimal nutrient mix for rapid and healthy poultry growth.', 
+    stock: 150, 
+    tags: ['Growth'], 
+    specifications: { 'Form': 'Mash/Pellets' } 
+  },
+  { 
+    id: 'af3', 
+    name: 'Aqua Fish Feed', 
+    brand: 'AquaGrow', 
+    category: 'Animal Feed', 
+    price: 1400, 
+    unit: '20kg', 
+    image: 'https://source.unsplash.com/400x400/?fish,feed', 
+    images: ['https://source.unsplash.com/800x800/?fish,feed'], 
+    rating: 4.6, 
+    reviews: 350, 
+    description: 'High-protein pellets for optimal fish aquaculture.', 
+    stock: 85, 
+    tags: ['Aqua'], 
+    specifications: { 'Protein': '32%' } 
+  },
+
+  // --- 8. FARM ACCESSORIES ---
+  { 
+    id: 'ac1', 
+    name: 'Protective Farm Gloves', 
+    brand: 'SafeHand', 
+    category: 'Farm Accessories', 
+    price: 220, 
+    unit: 'Pair', 
+    image: 'https://source.unsplash.com/400x400/?gloves', 
+    images: ['https://source.unsplash.com/800x800/?gloves'], 
+    rating: 4.5, 
+    reviews: 1200, 
+    description: 'Durable nitrile-coated gloves for safe farm work.', 
+    stock: 500, 
+    tags: ['Safety'], 
+    specifications: { 'Material': 'Nitrile' } 
+  },
+  { 
+    id: 'ac2', 
+    name: 'Farming Gumboots', 
+    brand: 'MudGuard', 
+    category: 'Farm Accessories', 
+    price: 499, 
+    unit: 'Pair', 
+    image: 'https://source.unsplash.com/400x400/?boots', 
+    images: ['https://source.unsplash.com/800x800/?boots'], 
+    rating: 4.6, 
+    reviews: 850, 
+    description: 'Heavy-duty gumboots providing protection in wet field conditions.', 
+    stock: 200, 
+    tags: ['Safety'], 
+    specifications: { 'Height': '12 inch' } 
+  },
+  { 
+    id: 'ac3', 
+    name: 'Green Shade Net', 
+    brand: 'NetWrap', 
+    category: 'Farm Accessories', 
+    price: 4500, 
+    unit: 'Roll', 
+    image: 'https://source.unsplash.com/400x400/?shade,net', 
+    images: ['https://source.unsplash.com/800x800/?shade,net'], 
+    rating: 4.7, 
+    reviews: 180, 
+    description: 'Protective shade net for nurseries and sensitive crops.', 
+    stock: 25, 
+    tags: ['Nursery'], 
+    specifications: { 'Area': '500 sq m' } 
+  },
+
+  // --- 9. STORAGE ITEMS ---
+  { 
+    id: 'st1', 
+    name: 'Grain Storage Bags', 
+    brand: 'FiberSafe', 
+    category: 'Storage Items', 
+    price: 75, 
+    unit: 'Piece', 
+    image: 'https://source.unsplash.com/400x400/?grain,storage', 
+    images: ['https://source.unsplash.com/800x800/?grain,storage'], 
+    rating: 4.4, 
+    reviews: 1500, 
+    description: 'Moisture-proof bags for long-term grain storage.', 
+    stock: 2000, 
+    tags: ['Bulk'], 
+    specifications: { 'Material': 'HDPE' } 
+  },
+  { 
+    id: 'st2', 
+    name: 'Large Plastic Drum', 
+    brand: 'AquaStore', 
+    category: 'Storage Items', 
+    price: 1200, 
+    unit: 'Unit', 
+    image: 'https://source.unsplash.com/400x400/?plastic,drum', 
+    images: ['https://source.unsplash.com/800x800/?plastic,drum'], 
+    rating: 4.7, 
+    reviews: 420, 
+    description: 'Food-grade storage drum for water or seeds.', 
+    stock: 50, 
+    tags: ['Solid'], 
+    specifications: { 'Volume': '200L' } 
+  },
+  { 
+    id: 'st3', 
+    name: 'Stackable Crates', 
+    brand: 'FreshWrap', 
+    category: 'Storage Items', 
+    price: 280, 
+    unit: 'Piece', 
+    image: 'https://source.unsplash.com/400x400/?crate', 
+    images: ['https://source.unsplash.com/800x800/?crate'], 
+    rating: 4.5, 
+    reviews: 600, 
+    description: 'Ventilated crates perfect for post-harvest vegetable storage.', 
+    stock: 300, 
+    tags: ['Commercial'], 
+    specifications: { 'Material': 'Plastic' } 
+  },
+
+  // --- 10. NURSERY & PLANT CARE ---
+  { 
+    id: 'nu1', 
+    name: 'Nursery Planter Pots', 
+    brand: 'GrowPot', 
+    category: 'Nursery & Plant Care', 
+    price: 15, 
+    unit: 'Piece', 
+    image: 'https://source.unsplash.com/400x400/?plant,pot', 
+    images: ['https://source.unsplash.com/800x800/?plant,pot'], 
+    rating: 4.5, 
+    reviews: 3000, 
+    description: 'Durable and reusable nursery pots for healthy plant starts.', 
+    stock: 5000, 
+    tags: ['Basic'], 
+    specifications: { 'Size': '6 inch' } 
+  },
+  { 
+    id: 'nu2', 
+    name: 'Seedling Starter Tray', 
+    brand: 'TrayPro', 
+    category: 'Nursery & Plant Care', 
+    price: 45, 
+    unit: 'Piece', 
+    image: 'https://source.unsplash.com/400x400/?seedling,tray', 
+    images: ['https://source.unsplash.com/800x800/?seedling,tray'], 
+    rating: 4.6, 
+    reviews: 950, 
+    description: 'Sectioned seedling tray for easy transplantation.', 
+    stock: 1000, 
+    tags: ['Start'], 
+    specifications: { 'Cells': '98' } 
+  },
+  { 
+    id: 'nu3', 
+    name: 'Agri Watering Can', 
+    brand: 'RainFlow', 
+    category: 'Nursery & Plant Care', 
+    price: 650, 
+    unit: 'Piece', 
+    image: 'https://source.unsplash.com/400x400/?watering,can', 
+    images: ['https://source.unsplash.com/800x800/?watering,can'], 
+    rating: 4.6, 
+    reviews: 430, 
+    description: 'Ergonomic watering can with a fine rose spray for nurseries.', 
+    stock: 75, 
+    tags: ['Tool'], 
+    specifications: { 'Volume': '5L' } 
+  }
+];
+
+export const products: Product[] = rawProducts.map((product) => {
+  const image = shopProductImages[product.id] || product.image;
+
+  return {
+    ...product,
+    image,
+    images: Array.from(new Set([image, ...product.images])),
+  };
+});
