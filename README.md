@@ -59,29 +59,9 @@ npm run dev
 
 ---
 
-## 📸 Screenshots
-
-*Add screenshots of your project here*
-
----
-
-## 🤝 Contributing
-
-Contributions are welcome!
-Feel free to fork this repo and submit a pull request.
-
----
-
 ## 📄 License
 
 This project is licensed under the MIT License.
-
----
-
-## 👩‍💻 Author
-
-**Mounika Kasa**
-GitHub: https://github.com/Kasa-Mounika3
 
 ---
 
@@ -93,13 +73,5 @@ GitHub: https://github.com/Kasa-Mounika3
 
 ---
 
-## 💡 Future Improvements
-
-* AI-based crop recommendations
-* Weather prediction integration
-* Mobile app version
-* Marketplace for farmers
-
----
 
 ✨ *AgriEasy – Making Agriculture Smarter and Easier!* 🌱
