@@ -1,20 +1,105 @@
-<div align="center">
-<img width="1200" height="475" alt="GHBanner" src="https://github.com/user-attachments/assets/0aa67016-6eaf-458a-adb2-6e31a0763ed6" />
-</div>
+# 🌱 AgriEasy
 
-# Run and deploy your AI Studio app
+AgriEasy is a smart agriculture platform designed to simplify farming operations and improve productivity using modern technology. It helps farmers manage crops, monitor data, and make better decisions efficiently.
 
-This contains everything you need to run your app locally.
+---
 
-View your app in AI Studio: https://ai.studio/apps/718d443f-727c-44c3-9b92-f48b47d34c81
+## 🚀 Features
 
-## Run Locally
+* 🌾 Crop management system
+* 📊 Real-time data monitoring
+* 🔥 Firebase integration for backend services
+* ⚡ Fast and modern UI (Vite + TypeScript)
+* 📱 Responsive design for all devices
+* 🌐 Easy-to-use interface for farmers
 
-**Prerequisites:**  Node.js
+---
 
+## 🛠️ Tech Stack
 
-1. Install dependencies:
-   `npm install`
-2. Set the `GEMINI_API_KEY` in [.env.local](.env.local) to your Gemini API key
-3. Run the app:
-   `npm run dev`
+* **Frontend:** HTML, TypeScript, Vite
+* **Backend:** Node.js
+* **Database:** Firebase Firestore
+* **Other Tools:** Git, GitHub
+
+---
+## ⚙️ Installation & Setup
+
+1. Clone the repository:
+
+```
+git clone https://github.com/Kasa-Mounika3/AgriEasy.git
+```
+
+2. Navigate to the project folder:
+
+```
+cd AgriEasy
+```
+
+3. Install dependencies:
+
+```
+npm install
+```
+
+4. Run the project:
+
+```
+npm run dev
+```
+
+---
+
+## 🔥 Firebase Setup
+
+* Create a Firebase project
+* Enable Firestore database
+* Add your Firebase configuration in the project
+
+---
+
+## 📸 Screenshots
+
+*Add screenshots of your project here*
+
+---
+
+## 🤝 Contributing
+
+Contributions are welcome!
+Feel free to fork this repo and submit a pull request.
+
+---
+
+## 📄 License
+
+This project is licensed under the MIT License.
+
+---
+
+## 👩‍💻 Author
+
+**Mounika Kasa**
+GitHub: https://github.com/Kasa-Mounika3
+
+---
+
+## 🌟 Acknowledgements
+
+* Firebase
+* Open-source community
+* All contributors
+
+---
+
+## 💡 Future Improvements
+
+* AI-based crop recommendations
+* Weather prediction integration
+* Mobile app version
+* Marketplace for farmers
+
+---
+
+✨ *AgriEasy – Making Agriculture Smarter and Easier!* 🌱
